@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Item Detail{% endblock %}
+{% block content %}
+
+
+<h3><a href="{% url 'profile' itemx.has %}"><img class="middle" src="{{ STATIC_URL }}image/exchangeicon.png" width="30" height="30"></a>&nbsp<font style="color:#343434;">{{itemx.has}}</font> <br/></h3><hr>
+<center>
+	<center>
+	<table width="960" height="300" border="0">
+  		<tr >
+			<td width="350" style="vertical-align:top; padding-top:5px; ">
+			<center><a href="{% url 'itemdetail' itemx.id %}"><img class="imgshadow2" src="{{itemx.photo.url}}" width="300" height="300"></a></br></center>
+			</td>
+    					<td width="150" style="vertical-align:top; padding-top:5px; ">
+						<font style="color:#4e4e50;">
+    					item name:<br>
+						brand or model:<br>
+						usage state: <br>
+						item status:<br>
+						date:<br>
+						description:<br>
+						recycle status:<br>
+						</font></td>
+						
+						<td width="350" style="vertical-align:top; padding-top:5px; word-wrap: break-word">
+    					{{itemx.name}}<br>
+						{{itemx.brand}}<br>
+						{{itemx.usage_state}}<br>
+						{{itemx.status}}<br>
+						{{itemx.date}}<br>
+						{{itemx.description}}<br>
+						{{itemx.astatus}}<br>
+
+						
+						<p style="line-height: 10px; padding-top:5px">
+							{% ifequal request.user itemx.has %}
+
+							<input type="submit" value="Show Offer(s)"  class="btn btn-default" onclick="window.location.href='{% url 'offers' request.user.username %}'"/>
+							
+							{% else %}
+
+							{% if itemx.astatus != 'RECYCLED' %}
+							<input type="submit" value="Give Offer"  class="btn btn-default" onclick="window.location.href='{% url 'recycle' request.user.username itemx.id%}'"/>
+							{% endif %} 
+							
+							{% endifequal %}
+						
+						</p>
+						</td>
+	 
+
+ 					</tr>
+					</table>	</center>
+					
+					
+</center>
+			<hr>
+{% endblock %}

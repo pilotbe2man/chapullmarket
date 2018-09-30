@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Offers{% endblock %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+		<table style="table-layout: fixed; width: 100%" height="30"; width="960" border="0">
+			<tr>
+				<td width="205"  style="padding-top:8px;" > 
+					 <h3 style="display: inline;"><img class="middle" src="{{ STATIC_URL }}image/Icon-user.png" width="30" height="30">&nbsp<font style="color:#343434;">{{user}}</font></h3>
+				</td>	
+			</tr>
+		</table><hr>
+		
+					  <table style="table-layout: fixed; width: 100%" width="960" height="40" border="0"><center>
+  					<tr>
+    					<td width="150" > 
+							<center>FROM</center>
+						</td>
+	
+    					<td width="150" style="vertical-align:top; padding-top:5px;">
+							<center></center>
+						</td>
+						
+						<td width="150" style="vertical-align:top; padding-top:5px; word-wrap: break-word">
+							<center>TO</center>
+						</td>
+						
+						<td width="300" style="vertical-align:top; padding-top:5px; word-wrap: break-word">
+							
+						</td>
+	 
+ 					</tr></center>
+					</table><hr>
+		
+		
+	  {% for i in alloffers%}
+	  <table style="table-layout: fixed; width: 100%" width="960" height="40" border="0"><center>
+  					<tr>
+    					<td width="150" > 
+							<center><a href="{% url 'itemdetail' i.item2.id %}"><img class="imgshadow" src="{{i.item2.photo.url}}" width="150" height="150"></a>
+							</center>
+						</td>
+	
+    					<td width="150" style="vertical-align:top; padding-top:5px;">
+							<center><img class="middle" src="{{ STATIC_URL }}image/rcycle.png" width="150" height="150"></center>
+						</td>
+						
+						<td width="150" style="vertical-align:top; padding-top:5px; word-wrap: break-word">
+							<center><a href="{% url 'itemdetail' i.item1.id %}"><img class="imgshadow" src="{{i.item1.photo.url}}" width="150" height="150"></a></center>
+						</td>
+						
+						<td width="300" style="vertical-align:top; padding-top:50px; word-wrap: break-word"><center>
+							&nbspStatus:  
+							{% if i.item1.astatus == 'OPEN' %}
+								{{i.status}}</br>
+							{% endif %}
+							{% if i.item1.astatus != 'OPEN' %}
+								{{i.item1.astatus}}</br>
+							{% endif %}
+							{% if i.item1.has == user %}
+								{% if i.item1.astatus == 'OPEN' %}
+									{% if i.status == 'offered' %}
+									  <input type="submit" value="Accept"  class="btn btn-default" onclick="window.location.href='{% url 'agree' i.item1.id i.item2.id i.id %}'"/>&nbsp
+									  <input type="submit" value="Reject"  class="btn btn-default" onclick="window.location.href='{% url 'ignore' i.id %}'"/>&nbsp
+									{% endif %}
+								{% endif %}
+							{% endif %}
+							{% if i.status == 'agree' %}
+								{% if i.status == 'agree' %}
+									{% if i.item1.has == user %}
+									</br> Informations of {{i.item2.has.username}}: </br>{{i.item2.has.email}}
+									{% endif %}
+									{% if i.item2.has == user %}
+									</br> Informations of {{i.item1.has.username}}: </br>{{i.item1.has.email}} 
+									{% endif %}
+								{% endif %}
+								{% if i.status == 'ignored' %}
+									</br> Ignored
+								{% endif %}
+							{% endif %}
+							</center>
+							
+							
+						</td>
+	 
+ 					</tr></center>
+					</table><hr>
+      
+    {% empty %}
+      There is no item..
+    {% endfor %}
+	  
+	  
+	  
+    {% else %}<center><br /><br />
+      Please login...<br />
+      <form action="{% url 'home' %}" method="post" id="signin" >{% csrf_token %}
+        <input type="text" name="user_name" size="15"  class="form-control" placeholder="username"/> Username<br />
+        <input type="password" name="pass" size="15"  class="form-control" placeholder="password"/> Password<br />
+        <input type="submit" value="sign in" class="btn btn-default"/>
+      </form>
+      
+      <a href="/register/">Sign-up</a>
+		</center>
+    {% endif %}
+{% endblock %}

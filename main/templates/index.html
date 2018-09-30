@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+    {% if request.user.is_authenticated %}<center><hr>
+     <h3><font style="color:#cecece;">Welcome {{ request.user.username }}, recently added 15 items..</font></h3>
+		<table style="border-collapse: collapse" ><hr>
+		{% for i in itemx|slice:"15" %}
+	
+		{% cycle '<tr >' '' '' '' ''  %}
+			<td width="190" height="186"><center><a href="{% url 'itemdetail' i.id %}"><img class="imgshadow" src="{{i.photo.url}}" width="150" height="150"></a><br>{{i.name}}</td></center>
+		{% cycle '' '' '' ''  '</tr>' %}
+		{% endfor %}
+		</table>
+	<hr><a href="/items/"><font style="color:#e3e7f0; font-size:12px;">(+)More</a></center>
+    {% else %}
+	<br/><br/><br/><br/><br/>
+	<center>
+	<table width="100%px" height="160" border="0">
+		<tr>
+			<td width="35%">
+			<h2>Please Login..</h2>					
+					<form action="{% url 'home' %}" method="post" id="signin" >{% csrf_token %}
+					<paragraph> Username: <input autocomplete="on" type="text" name="user_name" maxlength="20" size="20" class="form-control" placeholder="username"/>
+					<paragraph> Password: <input autocomplete="on" type="password" name="pass" maxlength="20" size="20" class="form-control" placeholder="password"/>
+					<p style="line-height: 5px;">
+					<input type="submit" value="Login" class="btn btn-default"/>        			 	
+          			<button class="btn btn-default" type="button" onclick="window.location.href='/sign_up/'">Sign Up</button>
+          			</form> 		
+          	</td>			
+			<td>
+				<img src="{{ STATIC_URL }}image/login.png" width="250" height="250">
+			</td>
+			<td width="45%" align="right">
+			<h4>
+				Exchange your electronic devices.<img class="middle" src="{{ STATIC_URL }}image/banner1.png" width="170">offers a new way to recycle devices.
+			</h4>
+		</tr>
+	</table> 
+	</center>
+    {% endif %}
+{% endblock %}

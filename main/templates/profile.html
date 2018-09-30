@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+		<table style="table-layout: fixed; width: 100%" height="30"; width="960" border="0">
+			<tr>
+				<td width="205"  style="padding-top:8px;" > 
+					 <h3 style="display: inline;"><img class="middle" src="{{ STATIC_URL }}image/Icon-user.png" width="30" height="30">&nbsp<font style="color:#343434;">{{user}}</font></h3>
+				</td>	
+				<td align="left" style="text-align: right; padding-top:8px;">
+				
+				</td>
+			</tr>
+		</table><hr>
+
+	  {% for i in user.Item.all%}
+	  <table style="table-layout: fixed; width: 100%" width="960" height="40" border="0">
+  					<tr>
+    					<td width="205" > 
+							<a href="{% url 'itemdetail' i.id %}"><img class="imgshadow" src="{{i.photo.url}}" width="150" height="150"></a>
+						</td>
+	
+    					<td width="150" style="vertical-align:top; padding-top:5px;">
+						<font style="color:#4e4e50;">
+    					item name:<br>
+						brand or model:<br>
+						usage state: <br>
+						item status:<br>
+						Date:<br>
+						description:<br></font>
+						</td>
+						
+						<td width="350" style="vertical-align:top; padding-top:5px; word-wrap: break-word">
+    					{{i.name}}<br>
+						{{i.brand}}<br>
+						{{i.usage_state}}<br>
+						{{i.status}}<br>
+						{{i.date}}<br>
+						{{i.description}}
+						</td>
+
+	 
+						<td align="left" style="padding-bottom:9px; text-align: right">
+							{% ifequal request.user user %}
+							<input type="submit" value="Show Offers"  class="btn btn-default" onclick="window.location.href='{% url 'offers' request.user.username %}'"/>
+					
+							<input type="submit" value="Details"  class="btn btn-default" onclick="window.location.href='{% url 'itemdetail' i.id %}'"/>
+							{% endifequal %}	
+						</td>
+ 					</tr>
+					</table><hr>
+      
+    {% empty %}
+      There is no item..
+    {% endfor %}
+	  
+	  
+	  
+    {% else %}<center><br /><br />
+      Please login...<br />
+      <form action="{% url 'home' %}" method="post" id="signin" >{% csrf_token %}
+        <input type="text" name="user_name" size="15"  class="form-control" placeholder="username"/> Username<br />
+        <input type="password" name="pass" size="15"  class="form-control" placeholder="password"/> Password<br />
+        <input type="submit" value="sign in" class="btn btn-default"/>
+      </form>
+      
+      <a href="/register/">Sign-up</a>
+		</center>
+    {% endif %}
+{% endblock %}

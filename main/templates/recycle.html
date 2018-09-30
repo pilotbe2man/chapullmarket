@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Recycle{% endblock %}
+{% block content %}
+    {% if request.user.is_authenticated %}
+      <h3><img class="middle" src="{{ STATIC_URL }}image/Icon-user.png" width="30" height="30">&nbsp<font style="color:#343434;">{{user}}</font> <br/></h3><hr>
+	  {% for i in user.Item.all%}
+	  <table style="table-layout: fixed; width: 100%" width="960" height="40" border="0">
+  					<tr>
+    					<td width="205" > 
+							<a href="{% url 'itemdetail' i.id %}"><img class="imgshadow" src="{{i.photo.url}}" width="150" height="150"></a>
+						</td>
+	
+    					<td width="150" style="vertical-align:top; padding-top:5px;">
+						<font style="color:#4e4e50;">
+    					item name:<br>
+						brand or model:<br>
+						usage state: <br>
+						item status:<br>
+						Date:<br>
+						description:<br></font>
+						</td>
+						
+						<td width="350" style="vertical-align:top; padding-top:5px; word-wrap: break-word">
+    					{{i.name}}<br>
+						{{i.brand}}<br>
+						{{i.usage_state}}<br>
+						{{i.status}}<br>
+						{{i.date}}<br>
+						{{i.description}}
+						</td>
+
+	 					{% if i.astatus != 'RECYCLED' %}
+						<td align="left" style="padding-bottom:9px; text-align: right">
+							<input type="submit" value="Recycle"  class="btn btn-default" onclick="window.location.href='{% url 'donerecycle' givenitem i.id %}'"/>	
+						</td>
+						{% endif %}
+ 					</tr>
+					</table><hr>
+      
+    {% empty %}
+      There is no item..
+    {% endfor %}
+	  
+	  
+	  
+    {% else %}<center><br /><br />
+      Please login...<br />
+      <form action="{% url 'home' %}" method="post" id="signin" >{% csrf_token %}
+        <input type="text" name="user_name" size="15"  class="form-control" placeholder="username"/> Username<br />
+        <input type="password" name="pass" size="15"  class="form-control" placeholder="password"/> Password<br />
+        <input type="submit" value="sign in" class="btn btn-default"/>
+      </form>
+      
+      <a href="/register/">Sign-up</a>
+		</center>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Search Items{% endblock %}
+{% block content %}
+
+{% if request.user.is_authenticated %}
+	<h4><img class="middle" src="{{ STATIC_URL }}image/itemico.png" width="30" height="30">&nbsp<font style="color:#343434;">Search Items Page</font></h4>
+	<table style="border-collapse: collapse;  " > 
+		<p>You searched for: <strong>{{ q }}</strong></p>
+		{% if items %}
+    		<p>Found {{ items|length }} item{{ items|pluralize }}.</p>
+    			{% for item in items %}
+    				{# Each "item" is a Contact model object. #}
+        			{% cycle '<tr >' ''  '' '' '' %}
+				<td style = "border: 1px solid; border-color:#818489" width="180" height="270">
+				<center><a href="{% url 'itemdetail' item.id %}"><img class="middle" src="{{item.photo.url}}" width="150" height="150"></a></center>
+				<center>
+				{{item.name}}<br>
+				{{item.brand}}<br>
+				{{item.usage_state}}<br>
+				{{item.status}}<br>
+				{{item.astatus}}<br></center>
+				</td>
+					{% cycle '' '' '' '' '</tr>' %}
+        		{% endfor %}
+        	{% else %}
+    		<p>No items matched your search criteria.</p>
+		{% endif %}
+		</table></center>
+{% else %}
+		<center><br/><br/>Please login...<br />
+				<form action="{% url 'home' %}" method="post" id="signin" >{% csrf_token %}
+					<input type="text" name="user_name" size="15"  class="form-control" placeholder="username"/> Username<br />
+					<input type="password" name="pass" size="15"  class="form-control" placeholder="password"/> Password<br />
+					<input type="submit" value="sign in" class="btn btn-default"/>
+				</form>
+				<a href="/register/">Sign-up</a>
+		</center>
+	
+	{% endif %}
+			
+{% endblock %}

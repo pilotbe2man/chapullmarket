@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<head>
+    <title>Chapull Market | {% block title %}{% endblock %}</title>{% load staticfiles %}
+	<link href="{{ STATIC_URL }}css/main.css" rel="stylesheet" type="text/css">
+	<link rel="shortcut icon" href="{{ STATIC_URL }}image/site.ico">
+		<!--[if lt IE 7]>
+		<style type="text/css">
+			#wrapper { height:100%; }
+		</style>
+	<![endif]-->
+	
+</head>
+
+<body>
+
+	 <!-- Navbar
+    ================================================== -->   
+    <div id="wrapper">
+
+		<div id="header">
+			<div id="headercontent">
+			 	<table width="960" height="40" border="0">
+  					<tr>
+    					<td width="205" > 
+							<a href="/"><img class="middle" src="{{ STATIC_URL }}image/banner.png" width="205" height="40"></a>	
+						</td>
+	
+    					<td width="250" style="vertical-align:top; padding-top:5px;">
+    					{% if request.user.is_authenticated %}
+    						<form style="display:inline;" method="get" action="/search/" id="search">
+	  						<input name="q" type="text" size="40" placeholder="Search item" />
+				 			</form>
+				 			{% else %} 
+				 			{% endif %}
+						</td>
+	 
+						<td align="left" style="padding-bottom:9px; text-align: right;">
+							
+							{% if request.user.is_authenticated %}
+							<a href="{% url 'home' %}">Home</a> &nbsp | &nbsp
+							<a href="{% url 'profile' request.user.username %}">Profile</a> &nbsp | &nbsp
+							<a href="{% url 'additem' %}"> Add Item</a> &nbsp|&nbsp &nbsp
+							<a href="/items/">Items</a> &nbsp | &nbsp
+							<a href="/aboutus/">About Us</a> &nbsp | &nbsp<a href="{% url 'logout' %}">Logout</a> &nbsp
+							{% else %} 
+							<a href="/aboutus/">About Us</a> &nbsp | &nbsp
+							<a href="{% url 'home' %}">Sign-In</a> &nbsp | &nbsp
+							<a href="/sign_up/">Sign-Up</a>
+							{% endif %}
+						</td>
+ 					</tr>
+					</table> 
+			</div>
+		</div><!-- #header -->
+		<div id="content">
+			<div id="box">
+				{% block content %}{% endblock %}
+			</div><!-- #box -->
+		</div><!-- #content -->
+		
+		<div id="footer"><center>
+			<br>
+			{% block footer %}
+				{% if request.user.is_authenticated %}
+					users:<br/><br>|
+					{% for u in users|slice:"15" %}
+					&nbsp <a href="{% url 'profile' u.username %}">{{ u.username }}</a>&nbsp|
+					{% endfor %}
+					<br><br> All rights reserverd by <font style="color:#ccc;">® Chapull Market</font>
+					{% else %}
+					<font style="color:#858585;letter-spacing:3pt; line-height:3;" >Please <a href="/">login</a> for access to content...<br> All rights reserverd by <font style="color:#fff;">® Chapull Market </font></font>
+				{% endif %}
+				
+			{% endblock %}</center>
+		</div><!-- #footer -->
+	</div><!-- #wrapper -->
+</body>
+</html>

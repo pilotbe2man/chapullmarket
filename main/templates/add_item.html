@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Recycle{% endblock %}
+{% block content %}<center>
+<br>
+{% if request.user.is_authenticated %}
+ 	<table width="100%px" height="160" border="0">
+  	<tr>
+    	<td width="35%"> 
+		<h2>Recycle Device</h2>{{ error_info }}
+		<form action="/additem/" method="post" id="f_signup" enctype="multipart/form-data">
+			{% csrf_token %}
+			item name
+			<input autocomplete="off" type="text" name="i_name" size="20" maxlength="20" class="form-control" placeholder="item name"/>
+			brand or model
+			<input autocomplete="off" type="text" name="model" size="20" maxlength="20" class="form-control" placeholder="brand or model"/>
+			usage state
+			<input autocomplete="off" type="text" name="u_state" size="20" maxlength="20" class="form-control" placeholder="usage state"/>
+			description
+			<input autocomplete="off" type="text" name="description" size="75"  maxlength="75" class="form-control" placeholder="description"/>
+			item status
+			  <p>
+				<label>
+					<input type="radio" name="status" value="Works" id="Status_0" />
+					  Works</label>
+					<label>
+					  <input type="radio" name="status" value="Faulty" id="Status_1" />
+					Faulty</label>
+					<label>
+					  <input type="radio" name="status" value="Broken" id="Status_2" />
+					Broken</label>
+					<br />
+				  </p>
+			
+			<p>{{ form.non_field_errors }}</p>
+			<p>{{ form.docfile.label_tag }} {{ form.docfile.help_text }}</p>
+			<p>
+				{{ form.docfile.errors }}
+				{{ form.docfile }}
+			</p>
+			<p style="line-height: 5px;">
+			
+			<input type="submit" value="Finish"  class="btn btn-default"/>
+			</p>
+		</form>
+	
+	</td>
+	
+    <td><img src="{{ STATIC_URL }}image/rcycle.png" width="300" height="300">
+    
+	</td>
+	
+	<td width="35%" align="right">
+		<h4>
+			Exchange your electronic devices.<img class="middle" src="{{ STATIC_URL }}image/banner1.png" width="170">offers a new way to recycle devices.
+		</h4>
+  </tr>
+</table>    
+
+{% else %}
+ 	<h1> Error:</h1>
+	<h2> You are all ready has an account...</h2>
+	<h4><a href="/">Back...</a><h4>
+{% endif %}</center>
+{% endblock %}
+

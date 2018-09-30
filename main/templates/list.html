@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Items{% endblock %}
+{% block content %}
+	{% if request.user.is_authenticated %}
+	<h4><img class="middle" src="{{ STATIC_URL }}image/itemico.png" width="30" height="30">&nbsp
+	<font style="color:#343434;">All items Page</font></h4> 
+	<center>
+	<table style="border-collapse: collapse;  " >
+	{% for items in pagex %}
+		{# Each "items" is a Contact model object. #}
+		
+		{% cycle '<tr >' ''  '' '' '' %}
+			<td style = "border: 1px solid; border-color:#818489" width="180" height="270">
+				<center><a href="{% url 'itemdetail' items.id %}"><img class="imgshadow" src="{{items.photo.url}}" width="150" height="150"></a></center>
+				<center><font style="color:#efefef;">
+				{{items.name}}<br>
+				{{items.brand}}<br>
+				{{items.usage_state}}<br>
+				{{items.status}}<br></font></center>
+			</td>
+		{% cycle '' '' '' '' '</tr>' %}
+
+		
+		{% empty %}There is no item..
+	{% endfor %}
+	</table></center>
+	{% else %}
+		<center><br/><br/>Please login...<br />
+				<form action="{% url 'home' %}" method="post" id="signin" >{% csrf_token %}
+					<input type="text" name="user_name" size="15"  class="form-control" placeholder="username"/> Username<br />
+					<input type="password" name="pass" size="15"  class="form-control" placeholder="password"/> Password<br />
+					<input type="submit" value="sign in" class="btn btn-default"/>
+				</form>
+				<a href="/register/">Sign-up</a>
+		</center>
+	
+	{% endif %}
+			
+		<div class="pagination">
+			<span class="step-links">
+				{% if pagex.has_previous %}
+					<a href="?page={{ pagex.previous_page_number }}">previous</a>
+				{% endif %}
+
+				<span class="current">
+					<font style="color:#dadada;">Page {{ pagex.number }} of {{ pagex.paginator.num_pages }}.</font>
+				</span>
+
+				{% if pagex.has_next %}
+					<a href="?page={{ pagex.next_page_number }}">next</a>
+				{% endif %}
+			</span>
+		</div>
+{% endblock %}
