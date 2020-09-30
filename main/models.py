@@ -36,7 +36,7 @@ class Item(models.Model):
         (OPEN, 'OPEN'),
    		# the item is recycled.
    		(RECYCLED, 'RECYCLED'),
-        #
+        #the item is cancelled
         (CANCELED, 'CANCELED'),
     )
 	has = models.ForeignKey(User, related_name="Item")
